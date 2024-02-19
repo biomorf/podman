@@ -1,0 +1,3 @@
+[submodule "podman_systemd"]
+	path = podman_systemd
+	url = git@github.com:biomorf/podman_systemd.git

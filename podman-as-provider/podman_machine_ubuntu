@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+### https://stackoverflow.com/questions/72092497/podman-machine-start-on-ubuntu/73210319#comment135130489_73210319
+
+sudo wget https://github.com/containers/gvisor-tap-vsock/releases/download/v0.6.2/gvproxy-linux -O /usr/libexec/podman/gvproxy \
+  && \
+  sudo chmod +x /usr/libexec/podman/gvproxy
+
+#podman machine init vagrant
+#podman machine start vagrant
