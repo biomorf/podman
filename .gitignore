@@ -2,3 +2,4 @@
 #pinp/mycontainers/*
 !pinp/mycontainers
 
+.vagrant

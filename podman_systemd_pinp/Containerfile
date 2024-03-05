@@ -24,8 +24,8 @@ CMD [ "/usr/sbin/init" ]
 
 
 
-FROM systemd AS vagrant
-
+#FROM systemd AS vagrant
+#
 ARG USER=vagrant
 
 # Create the vagrant user

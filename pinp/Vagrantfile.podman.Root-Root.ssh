@@ -16,7 +16,6 @@ elsif Vagrant::Util::Platform.linux?
     puts "Vagrant launched from linux."
     DOCKER_GID = `stat -c '%g' /var/run/docker.sock | tr -d '\n'`
     puts "vagrant host: /var/run/docker.sock is owned by GID #{DOCKER_GID}"
-    puts "NOTE run podman with sudo (as root)!!!"
 else
     # is some other OS
     puts "Vagrant launched from unknown platform."
@@ -34,23 +33,28 @@ Vagrant.configure(2) do |config|
     conf.vm.provider :docker do |docker, override|
       override.vm.box = nil
       docker.name = "vagrant.podman.systemd"
-      #docker.image = ""
+      #docker.image = "quay.io/podman/stable"
       docker.build_dir = "."
-      docker.dockerfile = "Containerfile"
+#TODO merge these dockerfiles
+      #docker.dockerfile = "Containerfile.podmanV2"
+      docker.dockerfile = "Containerfile.podmanV2.vagrant"
       #docker.build_args = ["--build-arg", "DOCKER_GID=#{DOCKER_GID}"]
       docker.remains_running = true
-#      docker.has_ssh = true
+      docker.has_ssh = true
 
       docker.privileged = true
-      #docker.volumes = ["/sys/fs/cgroup:/sys/fs/cgroup:rw"]
+      #docker.volumes = ["//sys/fs/cgroup:/sys/fs/cgroup:rw"]
       docker.volumes = ["./mycontainers:/var/lib/containers"]
       docker.create_args = ["-it"]
       #docker.create_args = ["-t", "--cgroupns=host", "--security-opt", "seccomp=unconfined", "--tmpfs", "/tmp", "--tmpfs", "/run", "--tmpfs", "/run/lock", "--mount", "type=bind,source=//var/run/docker.sock,target=/var/run/docker.sock"]
         #"--mount", "type=bind,source=//var/run/docker.sock,target=/var/run/docker.sock",
         #"-v", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
+        #"--cgroupns=host",
 
       # Uncomment to force arm64 for testing images on Intel
       # docker.create_args = ["--platform=linux/arm64", "--cgroupns=host"]
+
+#      docker.cmd = ["/usr/bin/bash"]
     end
 
     # need to tell podman to forward the ssh port
